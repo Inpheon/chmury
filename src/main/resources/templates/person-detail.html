@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Szczegóły Osoby</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css}"/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/}">Drzewo Genealogiczne</a>
+    <div>
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" th:href="@{/}">Strona Główna</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/add-person}">Dodaj Osobę</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/set-relationship}">Ustaw Rodzica-Dziecko</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/set-spouse}">Ustaw Małżonka</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/add-sibling}">Dodaj Rodzeństwo</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/search}">Szukaj Relacji</a></li>
+        <li class="nav-item"><a class="nav-link" th:href="@{/visualize}">Wizualizuj</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <h2 th:text="${person.firstName + ' ' + person.lastName}"></h2>
+  <p>
+    <strong>ID:</strong> <span th:text="${person.id}"></span><br/>
+    <strong>Małżonek:</strong>
+    <span th:text="${person.spouse != null ? person.spouse.firstName + ' ' + person.spouse.lastName : 'Brak'}"></span>
+  </p>
+
+  <h4>Rodzice</h4>
+  <ul>
+    <li th:each="parent : ${person.parents}">
+      <a th:href="@{|/person/${parent.id}|}" th:text="${parent.firstName + ' ' + parent.lastName}"></a>
+    </li>
+    <li th:if="${person.parents.size()} == 0">Brak zapisanych rodziców</li>
+  </ul>
+
+  <h4>Dzieci</h4>
+  <ul>
+    <li th:each="child : ${person.children}">
+      <a th:href="@{|/person/${child.id}|}" th:text="${child.firstName + ' ' + child.lastName}"></a>
+    </li>
+    <li th:if="${person.children.size()} == 0">Brak zapisanych dzieci</li>
+  </ul>
+
+  <h4>Rodzeństwo</h4>
+  <ul>
+    <li th:each="sib : ${person.siblings}">
+      <a th:href="@{|/person/${sib.id}|}" th:text="${sib.firstName + ' ' + sib.lastName}"></a>
+    </li>
+    <li th:if="${person.siblings.size()} == 0">Brak zapisanych rodzeństwa</li>
+  </ul>
+
+  <a class="btn btn-warning" th:href="@{|/edit-person/${person.id}|}">Edytuj</a>
+  <form th:action="@{/delete-person}" method="post" style="display:inline;">
+    <input type="hidden" name="id" th:value="${person.id}"/>
+    <button type="submit" class="btn btn-danger">Usuń</button>
+  </form>
+  <a class="btn btn-secondary" th:href="@{/}">Wróć</a>
+</div>
+
+<script th:src="@{https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

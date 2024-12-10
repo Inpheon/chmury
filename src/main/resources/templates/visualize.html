@@ -64,13 +64,12 @@
         fetch('/graph-data')
             .then(response => response.json())
             .then(data => {
-                // Prepare nodes with enhanced styling
                 const nodes = new vis.DataSet(data.nodes.map(node => {
                     let shape, color, fontSize;
                     if (node.type === 'Family') {
                         shape = 'box';
                         color = {
-                            background: '#FFD700', // Gold for families
+                            background: '#FFD700',
                             border: '#B8860B',
                             highlight: {
                                 background: '#FFA500',
@@ -78,10 +77,10 @@
                             }
                         };
                         fontSize = 16;
-                    } else { // Person
+                    } else {
                         shape = 'ellipse';
                         color = {
-                            background: '#97C2FC', // Light blue for persons
+                            background: '#97C2FC',
                             border: '#2B7CE9',
                             highlight: {
                                 background: '#D2E5FF',
@@ -112,7 +111,6 @@
                     };
                 }));
 
-                // Prepare edges with enhanced styling
                 const edges = new vis.DataSet(data.links.map(link => {
                     let color, arrows;
                     switch (link.relationshipType) {
@@ -245,7 +243,7 @@
                         const nodeId = params.nodes[0];
                         if (nodeId < 0) {
                             const familyId = -nodeId;
-                            window.location.href = `/family/${familyId}`;
+                            // window.location.href = `/family/${familyId}`; // DESCOPED
                         } else {
                             window.location.href = `/person/${nodeId}`;
                         }
